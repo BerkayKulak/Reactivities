@@ -14,7 +14,7 @@ namespace Reactivities.API
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var host = CreateHostBuilder(args).Build();
 
@@ -26,7 +26,9 @@ namespace Reactivities.API
             {
                 var context = services.GetRequiredService<DataContext>();
 
-                context.Database.Migrate();
+                await context.Database.MigrateAsync();
+
+                await Seed.SeedData(context);
             }
             catch (Exception e)
             {
@@ -35,7 +37,7 @@ namespace Reactivities.API
                 logger.LogError(e,"An Error Occured during migration");
             }
 
-            host.Run();
+            await host.RunAsync();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
