@@ -13,6 +13,7 @@ function App() {
       .get<Activity[]>("https://localhost:44335/api/activities")
       .then((response) => {
         setActivities(response.data);
+        console.log(response.data);
       });
   }, []);
 
