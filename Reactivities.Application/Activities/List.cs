@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Reactivities.Domain;
 using Reactivities.Persistence;
 
@@ -25,10 +26,11 @@ namespace Reactivities.Application.Activities
             public Handler(DataContext context)
             {
                 _context = context;
+               
             }
             public async Task<List<Activity>> Handle(Query request, CancellationToken cancellationToken)
             {
-                return await _context.Activities.ToListAsync();
+                return await _context.Activities.ToListAsync(cancellationToken);
             }
         }
 
