@@ -1,10 +1,12 @@
-import { makeObservable, observable } from "mobx";
+import { makeAutoObservable } from "mobx";
 
 export default class ActivityStore {
-    title = 'Hello from MobX!';
-    constructor(){
-        makeObservable(this,{
-            title:observable
-        })
-    }
+  title = "Hello from MobX!";
+  constructor() {
+    makeAutoObservable(this);
+  }
+
+  setTitle = () => {
+    this.title = this.title + "!";
+  };
 }
