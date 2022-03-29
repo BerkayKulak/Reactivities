@@ -1,3 +1,4 @@
+import { observer } from "mobx-react-lite";
 import React from "react";
 import { Grid } from "semantic-ui-react";
 import { Activity } from "../../../app/models/activity";
@@ -8,15 +9,13 @@ import ActivityList from "./ActivityList";
 
 interface Props {
   activities: Activity[];
-  createOrEdit: (activity: Activity) => void;
   deleteActivity: (id: string) => void;
   submitting: boolean;
 }
 
-export default function ActivityDashboard({
+export default observer(function ActivityDashboard({
   activities,
   deleteActivity,
-  createOrEdit,
   submitting,
 }: Props) {
   const { activityStore } = useStore();
@@ -31,16 +30,9 @@ export default function ActivityDashboard({
         />
       </Grid.Column>
       <Grid.Column width="6">
-        {selectedActivity && !editMode && 
-        <ActivityDetails />
-        }
-        {editMode && (
-          <ActivityForm
-            createOrEdit={createOrEdit}
-            submitting={submitting}
-          />
-        )}
+        {selectedActivity && !editMode && <ActivityDetails />}
+        {editMode && <ActivityForm />}
       </Grid.Column>
     </Grid>
   );
-}
+});
