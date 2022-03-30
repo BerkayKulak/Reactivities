@@ -8,8 +8,6 @@ export default observer(function ActivityDetails() {
   const { activityStore } = useStore();
   const {
     selectedActivity: activity,
-    openForm,
-    cancelSelectedActivity,
   } = activityStore;
 
   if (!activity) return <LoadingComponent content=""/>;
@@ -27,13 +25,13 @@ export default observer(function ActivityDetails() {
       <Card.Content extra>
         <Button.Group widths="2">
           <Button
-            onClick={() => openForm(activity.id)}
+            
             basic
             color="blue"
             content="Edit"
           />
           <Button
-            onClick={cancelSelectedActivity}
+         
             basic
             color="grey"
             content="Cancel"
