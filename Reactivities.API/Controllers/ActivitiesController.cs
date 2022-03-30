@@ -17,6 +17,7 @@ namespace Reactivities.API.Controllers
             return await Mediator.Send(new List.Query());
         }
 
+
         [HttpGet("{id}")]
         public async Task<ActionResult<Activity>> GetActivity(Guid id)
         {
