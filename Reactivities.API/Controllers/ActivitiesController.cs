@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using MediatR;
 
 namespace Reactivities.API.Controllers
 {
@@ -24,6 +25,7 @@ namespace Reactivities.API.Controllers
             return await Mediator.Send(new Details.Query{Id = id});
         }
 
+        
         [HttpPost]
         public async Task<IActionResult> CreateActivity(Activity activity)
         {
