@@ -20,6 +20,7 @@ export default class ActivityStore {
   }
 
   loadActivities = async () => {
+    this.loadingInitial = true;
     try {
       const activities = await agent.Activities.list();
 
@@ -42,6 +43,7 @@ export default class ActivityStore {
       try {
         activity = await agent.Activities.details(id);
         this.setActivity(activity);
+        this.selectedActivity = activity;
         this.setLoadingInitial(false);
       } catch (error) {
         console.log(error);
@@ -62,7 +64,6 @@ export default class ActivityStore {
   setLoadingInitial = (state: boolean) => {
     this.loadingInitial = state;
   };
-
 
   createActivity = async (activity: Activity) => {
     this.loading = true;
