@@ -1,5 +1,4 @@
 import { observer } from "mobx-react-lite";
-import { loadavg } from "os";
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Grid } from "semantic-ui-react";
