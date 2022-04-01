@@ -2,7 +2,6 @@
 using Reactivities.Application.Activities;
 using Reactivities.Domain;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Reactivities.API.Controllers
@@ -11,9 +10,9 @@ namespace Reactivities.API.Controllers
     {
 
         [HttpGet]
-        public async Task<ActionResult<List<Activity>>> GetActivities()
+        public async Task<IActionResult> GetActivities()
         {
-            return await Mediator.Send(new List.Query());
+            return HandleResult(await Mediator.Send(new List.Query()));
         }
 
 
@@ -28,7 +27,7 @@ namespace Reactivities.API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateActivity(Activity activity)
         {
-            return Ok(await Mediator.Send(new Create.Command { Activity = activity }));
+            return HandleResult(await Mediator.Send(new Create.Command { Activity = activity }));
         }
 
         [HttpPut("{id}")]
