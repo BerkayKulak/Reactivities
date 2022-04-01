@@ -1,21 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using FluentValidation;
 using MediatR;
 using Reactivities.Domain;
 using Reactivities.Persistence;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Reactivities.Application.Activities
 {
     public class Create
     {
-        public class Command:IRequest
+        public class Command : IRequest
         {
             public Activity Activity { get; set; }
         }
+
+        public class CommandValidator : AbstractValidator<Command>
+        {
+            public CommandValidator()
+            {
+                RuleFor(x => x.Activity).SetValidator(new ActivityValidator());
+            }
+        }
+
+
 
         public class Handler : IRequestHandler<Command>
         {
