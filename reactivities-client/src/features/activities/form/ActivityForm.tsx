@@ -8,6 +8,7 @@ import { v4 as uuid } from "uuid";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { error } from "console";
+import MyTextInput from "../../../app/common/form/MyTextInput";
 
 export default observer(function ActivityForm() {
   const history = useHistory();
@@ -33,6 +34,11 @@ export default observer(function ActivityForm() {
 
   const validationSchema = Yup.object({
     title: Yup.string().required("Title is required"),
+    description: Yup.string().required("Description is required"),
+    category: Yup.string().required("category is required"),
+    date: Yup.string().required("date is required"),
+    venue: Yup.string().required("venue is required"),
+    city: Yup.string().required("city is required"),
   });
 
   useEffect(() => {
@@ -73,19 +79,13 @@ export default observer(function ActivityForm() {
       >
         {({ handleSubmit }) => (
           <Form className="ui form" onSubmit={handleSubmit} autoComplete="off">
-            <FormField>
-              <Field placeholder="Title" name="title" />
-              <ErrorMessage
-                name="title"
-                render={(error) => <Label basic color="red" content={error} />}
-              />
-            </FormField>
+            <MyTextInput name="title" placeholder="Title" />
 
-            <Field placeholder="Description" name="description" />
-            <Field placeholder="Category" name="category" />
-            <Field type="date" placeholder="Date" name="date" />
-            <Field placeholder="City" name="city" />
-            <Field placeholder="Venue" name="venue" />
+            <MyTextInput placeholder="Description" name="description" />
+            <MyTextInput placeholder="Category" name="category" />
+            <MyTextInput placeholder="Date" name="date" />
+            <MyTextInput placeholder="City" name="city" />
+            <MyTextInput placeholder="Venue" name="venue" />
             <Button
               loading={loading}
               floated="right"
