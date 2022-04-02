@@ -7,7 +7,7 @@ export default class ActivityStore {
   selectedActivity: Activity | undefined = undefined;
   editMode = false;
   loading = false;
-  loadingInitial = true;
+  loadingInitial = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -23,7 +23,9 @@ export default class ActivityStore {
     return Object.entries(
       this.activitiesByDate.reduce((activities, activity) => {
         const date = activity.date;
-        activities[date] = activities[date] ? [...activities[date], activity] : [activity];
+        activities[date] = activities[date]
+          ? [...activities[date], activity]
+          : [activity];
         return activities;
       }, {} as { [key: string]: Activity[] })
     );
