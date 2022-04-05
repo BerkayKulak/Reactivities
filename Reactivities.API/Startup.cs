@@ -30,6 +30,7 @@ namespace Reactivities.API
             });
 
             services.AddApplicationServices(_config);
+
             services.AddIdentityServices(_config);
         }
 

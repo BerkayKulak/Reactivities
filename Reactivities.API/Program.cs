@@ -1,14 +1,13 @@
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Reactivities.Domain;
 using Reactivities.Persistence;
+using System;
+using System.Threading.Tasks;
 
 namespace Reactivities.API
 {
@@ -26,15 +25,17 @@ namespace Reactivities.API
             {
                 var context = services.GetRequiredService<DataContext>();
 
+                var userManager = services.GetRequiredService<UserManager<AppUser>>();
+
                 await context.Database.MigrateAsync();
 
-                await Seed.SeedData(context);
+                await Seed.SeedData(context, userManager);
             }
             catch (Exception e)
             {
                 var logger = services.GetRequiredService<ILogger<Program>>();
 
-                logger.LogError(e,"An Error Occured during migration");
+                logger.LogError(e, "An Error Occured during migration");
             }
 
             await host.RunAsync();
