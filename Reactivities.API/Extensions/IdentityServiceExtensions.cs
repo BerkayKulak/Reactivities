@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using Reactivities.API.Services;
 using Reactivities.Domain;
 using Reactivities.Persistence;
+using System.Text;
 
 namespace Reactivities.API.Extensions
 {
@@ -17,7 +20,18 @@ namespace Reactivities.API.Extensions
 
             }).AddEntityFrameworkStores<DataContext>().AddSignInManager<SignInManager<AppUser>>();
 
-            services.AddAuthentication();
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("super secret key"));
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt =>
+            {
+                opt.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = key,
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
 
             services.AddScoped<TokenService>();
 
