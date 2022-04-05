@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Reactivities.Application.Activities;
 using Reactivities.Domain;
 using System;
@@ -17,7 +16,6 @@ namespace Reactivities.API.Controllers
         }
 
 
-        [Authorize]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetActivity(Guid id)
         {

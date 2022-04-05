@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Reactivities.API.DTOs;
 using Reactivities.API.Services;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace Reactivities.API.Controllers
 {
+    [AllowAnonymous]
     [ApiController]
     [Route("api/[controller]")]
     public class AccountController : ControllerBase
