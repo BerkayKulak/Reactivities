@@ -1,4 +1,5 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using Reactivities.Domain;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,13 @@ namespace Reactivities.API.Services
 {
     public class TokenService
     {
+        private readonly IConfiguration _config;
+
+        public TokenService(IConfiguration config)
+        {
+            _config = config;
+        }
+
         public string CreateToken(AppUser user)
         {
             var claims = new List<Claim>
@@ -20,7 +28,7 @@ namespace Reactivities.API.Services
 
             };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("super secret key"));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["TokenKey"]));
 
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
