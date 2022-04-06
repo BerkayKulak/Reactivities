@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Reactivities.Application.Activities;
 using Reactivities.Domain;
 using System;
@@ -8,7 +9,7 @@ namespace Reactivities.API.Controllers
 {
     public class ActivitiesController : BaseApiController
     {
-
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> GetActivities()
         {
