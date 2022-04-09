@@ -90,9 +90,14 @@ const Account = {
     requests.post<User>("/account/register", user),
 };
 
+const Profiles = {
+  get:(username:string) => requests.get<User>(`/profiles/${username}`),
+}
+
 const agent = {
   Activities,
   Account,
+  Profiles
 };
 
 export default agent;
