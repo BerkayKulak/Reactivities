@@ -2,7 +2,7 @@ import axios, { AxiosError, AxiosResponse } from "axios";
 import { toast } from "react-toastify";
 import { history } from "../..";
 import { Activity, ActivityFormValues } from "../models/activity";
-import { Photo } from "../models/profile";
+import { Photo, Profile } from "../models/profile";
 import { User, UserFormValues } from "../models/user";
 import { store } from "../stores/store";
 
@@ -101,8 +101,10 @@ const Profiles = {
       headers: { "Content-Type": "multipart/form-data" },
     });
   },
-  setMainPhoto:(id:string) => requests.post(`/photos/${id}/setMain`,{}),
-  deletePhoto:(id:string) => requests.delete(`/photos/${id}`), 
+  setMainPhoto: (id: string) => requests.post(`/photos/${id}/setMain`, {}),
+  deletePhoto: (id: string) => requests.delete(`/photos/${id}`),
+  updateProfile: (profile: Partial<Profile>) =>
+    requests.put(`/profiles`, profile),
 };
 
 const agent = {
