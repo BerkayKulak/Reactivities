@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Reactivities.API.Extensions;
 using Reactivities.API.Middleware;
+using Reactivities.API.SignalR;
 using Reactivities.Application.Activities;
 
 namespace Reactivities.API
@@ -20,7 +21,6 @@ namespace Reactivities.API
         {
             _config = config;
         }
-
 
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -67,6 +67,8 @@ namespace Reactivities.API
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+
+                endpoints.MapHub<ChatHub>("/chat");
             });
         }
     }
