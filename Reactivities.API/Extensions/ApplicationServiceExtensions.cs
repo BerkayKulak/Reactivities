@@ -6,6 +6,7 @@ using Microsoft.OpenApi.Models;
 using Reactivities.Application.Activities;
 using Reactivities.Application.Core;
 using Reactivities.Application.Interfaces;
+using Reactivities.Infrastructure.Photos;
 using Reactivities.Infrastructure.Security;
 using Reactivities.Persistence;
 
@@ -38,6 +39,8 @@ namespace Reactivities.API.Extensions
             services.AddAutoMapper(typeof(MappingProfiles).Assembly);
 
             services.AddScoped<IUserAccessor, UserAccessor>();
+
+            services.Configure<CloudinarySettings>(config.GetSection("Cloudinary"));
 
             return services;
         }
