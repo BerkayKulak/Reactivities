@@ -2,10 +2,12 @@ import { isThisHour } from "date-fns";
 import { makeAutoObservable, reaction, runInAction } from "mobx";
 import { act } from "react-dom/test-utils";
 import agent from "../api/agent";
+import { UserActivity } from "../models/activity";
 import { Photo, Profile } from "../models/profile";
 import { store } from "./store";
 
 export default class ProfileStore {
+  currentUserProfile: Profile | null = null;
   profile: Profile | null = null;
   loadingProfile = false;
   uploading = false;
@@ -13,6 +15,8 @@ export default class ProfileStore {
   followings: Profile[] = [];
   loadingFollowings: boolean = false;
   activeTab = 0;
+  userActivities: UserActivity[] = [];
+  loadingActivities = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -188,6 +192,25 @@ export default class ProfileStore {
     } catch (error) {
       console.log(error);
       runInAction(() => (this.loadingFollowings = false));
+    }
+  };
+
+  loadUserActivities = async (username: string, predicate?: string) => {
+    this.loadingActivities = true;
+    try {
+      const activities = await agent.Profiles.listActivities(
+        username,
+        predicate!
+      );
+      runInAction(() => {
+        this.userActivities = activities;
+        this.loadingActivities = false;
+      });
+    } catch (error) {
+      console.log(error);
+      runInAction(() => {
+        this.loadingActivities = false;
+      });
     }
   };
 }
