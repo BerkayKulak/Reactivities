@@ -25,16 +25,17 @@ export default class ProfileStore {
   loadProfile = async (username: string) => {
     this.loadingProfile = true;
     try {
-      const profile = await agent.Profiles.get(username);
-      runInAction(() => {
-        this.profile = profile;
-        this.loadingProfile = false;
-      });
+        const profile = await agent.Profiles.get(username);
+        runInAction(() => {
+            this.profile = profile;
+            this.loadingProfile = false;
+        })
     } catch (error) {
-      console.log(error);
-      runInAction(() => (this.loadingProfile = false));
+        console.log(error);
+        runInAction(() => this.loadingProfile = false);
     }
-  };
+}
+
 
   uploadPhoto = async (file: Blob) => {
     this.uploading = true;
