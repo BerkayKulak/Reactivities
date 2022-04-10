@@ -58,6 +58,10 @@ namespace Reactivities.API
 
             app.UseRouting();
 
+            app.UseDefaultFiles();
+
+            app.UseStaticFiles();
+
             app.UseCors("CorsPolicy");
 
             app.UseAuthentication();
@@ -69,6 +73,8 @@ namespace Reactivities.API
                 endpoints.MapControllers();
 
                 endpoints.MapHub<ChatHub>("/chat");
+
+                endpoints.MapFallbackToController("Index", "Fallback");
             });
         }
     }
