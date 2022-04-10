@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Reactivities.Application.Activities;
-using Reactivities.Application.Core;
 using Reactivities.Domain;
 using System;
 using System.Threading.Tasks;
@@ -11,7 +10,7 @@ namespace Reactivities.API.Controllers
     public class ActivitiesController : BaseApiController
     {
         [HttpGet]
-        public async Task<IActionResult> GetActivities([FromQuery] PagingParams param)
+        public async Task<IActionResult> GetActivities([FromQuery] ActivityParams param)
         {
             return HandlePageResult(await Mediator.Send(new List.Query { Params = param }));
         }
