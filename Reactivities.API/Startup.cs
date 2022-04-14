@@ -56,14 +56,14 @@ namespace Reactivities.API
 
             app.UseXfo(opt => opt.Deny());
 
-            app.UseCspReportOnly(opt =>
+            app.UseCsp(opt =>
                 opt.BlockAllMixedContent().
                     StyleSources(s => s.Self().CustomSources("https://fonts.googleapis.com", "https://cdnjs.cloudflare.com/")).
                     FontSources(s => s.Self().CustomSources("https://fonts.gstatic.com", "data:", "https://cdnjs.cloudflare.com")).
                     FormActions(s => s.Self()).
                     FrameAncestors(s => s.Self()).
-                    ImageSources(s => s.Self().CustomSources("https://res.cloudinary.com")).
-                    ScriptSources(s => s.Self()));
+                    ImageSources(s => s.Self().CustomSources("https://res.cloudinary.com", "https://www.facebook.com")).
+                    ScriptSources(s => s.Self().CustomSources("https://connect.facebook.net", "sha256-sUgiDZi12L1aDXlEvecobTV523NrnLxKUJvwL0Cr+so=")));
 
             if (env.IsDevelopment())
             {
