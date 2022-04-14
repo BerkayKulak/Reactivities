@@ -8,6 +8,7 @@ using Reactivities.API.Services;
 using Reactivities.Domain;
 using Reactivities.Infrastructure.Security;
 using Reactivities.Persistence;
+using System;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -32,7 +33,9 @@ namespace Reactivities.API.Extensions
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = key,
                     ValidateIssuer = false,
-                    ValidateAudience = false
+                    ValidateAudience = false,
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.Zero
                 };
                 opt.Events = new JwtBearerEvents
                 {
