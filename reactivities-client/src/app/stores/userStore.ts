@@ -68,7 +68,9 @@ export default class UserStore {
   facebookLogin = () => {
     window.FB.login(
       (response) => {
-        console.log(response);
+        agent.Account.fbLogin(response.authResponse.accessToken).then((user) =>
+          console.log(user)
+        );
       },
       { scope: "public_profile,email" }
     );
