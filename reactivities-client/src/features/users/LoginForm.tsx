@@ -1,7 +1,7 @@
-import { ErrorMessage, Formik } from "formik";
+import { ErrorMessage, Form, Formik } from "formik";
 import { observer } from "mobx-react-lite";
 import React from "react";
-import { Button, Form, Header, Label } from "semantic-ui-react";
+import { Button, Header, Label } from "semantic-ui-react";
 import MyTextInput from "../../app/common/form/MyTextInput";
 import { useStore } from "../../app/stores/store";
 
@@ -13,19 +13,19 @@ export default observer(function LoginForm() {
       onSubmit={(values, { setErrors }) =>
         userStore
           .login(values)
-          .catch((error) => setErrors({ error: "Invalid email or password" }))
+          .catch((error) => setErrors({ error: error.response.data }))
       }
     >
       {({ handleSubmit, isSubmitting, errors }) => (
         <Form className="ui form" onSubmit={handleSubmit} autoComplete="off">
           <Header
             as="h2"
-            content="Login to Reactivities"
+            content="Login to Reactivites"
             color="teal"
             textAlign="center"
           />
-          <MyTextInput placeholder="email" name="email" />
-          <MyTextInput placeholder="password" name="password" type="password" />
+          <MyTextInput name="email" placeholder="Email" />
+          <MyTextInput name="password" placeholder="Password" type="password" />
           <ErrorMessage
             name="error"
             render={() => (
@@ -37,7 +37,6 @@ export default observer(function LoginForm() {
               />
             )}
           />
-
           <Button
             loading={isSubmitting}
             positive
