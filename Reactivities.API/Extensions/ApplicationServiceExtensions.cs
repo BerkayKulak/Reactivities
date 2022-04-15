@@ -6,6 +6,7 @@ using Microsoft.OpenApi.Models;
 using Reactivities.Application.Activities;
 using Reactivities.Application.Core;
 using Reactivities.Application.Interfaces;
+using Reactivities.Infrastructure.Email;
 using Reactivities.Infrastructure.Photos;
 using Reactivities.Infrastructure.Security;
 using Reactivities.Persistence;
@@ -75,6 +76,8 @@ namespace Reactivities.API.Extensions
             services.AddScoped<IUserAccessor, UserAccessor>();
 
             services.AddScoped<IPhotoAccessor, PhotoAccessor>();
+
+            services.AddScoped<EmailSender>();
 
             services.Configure<CloudinarySettings>(config.GetSection("Cloudinary"));
 
