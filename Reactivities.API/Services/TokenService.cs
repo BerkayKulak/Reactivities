@@ -36,7 +36,7 @@ namespace Reactivities.API.Services
             var tokenDescriptor = new SecurityTokenDescriptor()
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.UtcNow.AddMinutes(1),
+                Expires = DateTime.UtcNow.AddMinutes(20),
                 SigningCredentials = creds
             };
 
