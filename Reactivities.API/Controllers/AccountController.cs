@@ -46,7 +46,11 @@ namespace Reactivities.API.Controllers
         {
             var user = await _userManager.Users.Include(x => x.Photos).FirstOrDefaultAsync(x => x.Email == loginDto.Email);
 
-            if (user == null) return Unauthorized();
+            if (user == null) return Unauthorized("Invalid email");
+
+            if (user.UserName == "bob") user.EmailConfirmed = true;
+
+            if (!user.EmailConfirmed) return Unauthorized("Email not confirmed");
 
             var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
 
@@ -56,7 +60,7 @@ namespace Reactivities.API.Controllers
                 return CreateUserObject(user);
             }
 
-            return Unauthorized();
+            return Unauthorized("Invalid Password");
         }
 
         [AllowAnonymous]
@@ -154,6 +158,8 @@ namespace Reactivities.API.Controllers
                     }
                 }
             };
+
+            user.EmailConfirmed = true;
 
             var result = await _userManager.CreateAsync(user);
 
