@@ -49,7 +49,8 @@ namespace Reactivities.API.Controllers
         [HttpPost("login")]
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
-            var user = await _userManager.Users.Include(x => x.Photos).FirstOrDefaultAsync(x => x.Email == loginDto.Email);
+            var user = await _userManager.Users.Include(p => p.Photos)
+                .FirstOrDefaultAsync(x => x.Email == loginDto.Email);
 
             if (user == null) return Unauthorized("Invalid email");
 
@@ -59,22 +60,13 @@ namespace Reactivities.API.Controllers
 
             var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
 
-            if (!result.Succeeded) return BadRequest("Problem registering user");
+            if (result.Succeeded)
+            {
+                await SetRefreshToken(user);
+                return CreateUserObject(user);
+            }
 
-            var origin = Request.Headers["origin"];
-
-            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-
-            token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
-
-            var verifyUrl = $"{origin}/account/verifyEmail?token={token}$email={user.Email}";
-
-            var message =
-                $"<p>Please click the below link to verify your email address:</p><p><a href='{verifyUrl}'>Click to verify email</a></p>";
-
-            await _emailSender.SendEmailAsync(user.Email, "Please verify email", message);
-
-            return Ok("Registration success - please verify email");
+            return Unauthorized("Invalid password");
         }
 
         [AllowAnonymous]
@@ -129,10 +121,9 @@ namespace Reactivities.API.Controllers
         {
             if (await _userManager.Users.AnyAsync(x => x.Email == registerDto.Email))
             {
-                ModelState.AddModelError("email", "Email already in use");
+                ModelState.AddModelError("email", "Email taken");
                 return ValidationProblem();
             }
-
             if (await _userManager.Users.AnyAsync(x => x.UserName == registerDto.Username))
             {
                 ModelState.AddModelError("username", "Username taken");
@@ -148,13 +139,18 @@ namespace Reactivities.API.Controllers
 
             var result = await _userManager.CreateAsync(user, registerDto.Password);
 
-            if (result.Succeeded)
-            {
-                await SetRefreshToken(user);
-                return CreateUserObject(user);
-            }
+            if (!result.Succeeded) return BadRequest("Problem registering user");
 
-            return BadRequest("Problem registering user");
+            var origin = Request.Headers["origin"];
+            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
+
+            var verifyUrl = $"{origin}/account/verifyEmail?token={token}&email={user.Email}";
+            var message = $"<p>Please click the below link to verify your email address:</p><p><a href='{verifyUrl}'>Click to verify email</a></p>";
+
+            await _emailSender.SendEmailAsync(user.Email, "Please verify email", message);
+
+            return Ok("Registration success - please verify email");
         }
 
         [Authorize]
