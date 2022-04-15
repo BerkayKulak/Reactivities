@@ -172,7 +172,7 @@ namespace Reactivities.API.Controllers
         {
             var refreshToken = Request.Cookies["refreshToken"];
 
-            var user = await _userManager.Users.Include(r => r.RefreshTokens)
+            var user = await _userManager.Users.Include(r => r.RefreshTokens).Include(p => p.Photos)
                 .FirstOrDefaultAsync(x => x.UserName == User.FindFirstValue(ClaimTypes.Name));
 
             if (user == null)
