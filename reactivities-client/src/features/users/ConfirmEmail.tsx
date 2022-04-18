@@ -61,6 +61,7 @@ export default function ConfirmEmail() {
           <div>
             <p>Email has been verified - you can now login</p>
             <Button
+              content="Login"
               primary
               onClick={() => modalStore.openModal(<LoginForm />)}
               size="huge"
